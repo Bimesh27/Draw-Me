@@ -5,48 +5,62 @@ import {
   Image,
   LetterText,
   Minus,
+  MousePointer2,
   MoveRight,
   Pencil,
   Square,
 } from "lucide-react";
 
-const iconColor = "#E0DFFF";
+export const defaultColor = "#E0DFFF";
 
 export const toolsItems = [
+  { name: "Select", icon: <MousePointer2 color={defaultColor} /> },
   {
     name: "Pencil",
-    icon: <Pencil color={iconColor} />,
+    icon: <Pencil color={defaultColor} />,
   },
   {
     name: "Eraser",
-    icon: <Eraser color={iconColor} />,
+    icon: <Eraser color={defaultColor} />,
   },
   {
     name: "Drag",
-    icon: <Hand color={iconColor} />,
+    icon: <Hand color={defaultColor} />,
   },
   {
     name: "Arrow",
-    icon: <MoveRight color={iconColor} />,
+    icon: <MoveRight color={defaultColor} />,
   },
   {
     name: "Text",
-    icon: <LetterText color={iconColor} />,
+    icon: <LetterText color={defaultColor} />,
   },
   {
     name: "Square",
-    icon: <Square color={iconColor} />,
+    icon: <Square color={defaultColor} />,
   },
   {
     name: "Circle",
-    icon: <Circle color={iconColor} />,
+    icon: <Circle color={defaultColor} />,
   },
   {
     name: "Line",
-    icon: <Minus color={iconColor} />,
+    icon: <Minus color={defaultColor} />,
   },
   {
     name: "Image",
-    icon: <Image color={iconColor} />,
+    icon: <Image color={defaultColor} />,
   },
+];
+
+export const colorSample = [
+  "#FFCCCC", // Bright Light Coral
+  "#FFE5CC", // Light Tangerine Cream
+  "#CCF2FF", // Light Electric Sky Blue
+  "#CCE5FF", // Vivid Soft Blue
+  "#FFD9E8", // Vibrant Pink Blush
+  "#E6CCFF", // Bright Lavender Mist
+  "#CCFFCC", // Vibrant Mint Green
+  "#FFCCF2", // Light Magenta Pink
+  "#FFFFCC", // Vibrant Lemonade Yellow
 ];

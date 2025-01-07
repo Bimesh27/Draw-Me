@@ -2,6 +2,8 @@
 
 import React, { useRef, useState, useEffect } from "react";
 import Tools from "./Tools";
+import ToolsDetails from "./ToolsDetails";
+import { defaultColor } from "@/constants";
 
 const DrawingCanvas: React.FC = () => {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
@@ -9,6 +11,8 @@ const DrawingCanvas: React.FC = () => {
   const [startPoint, setStartPoint] = useState<{ x: number; y: number } | null>(
     null
   );
+  const [strokeSize, setStrokeSize] = useState<number>(2);
+  const [strokeColor, setStrokeColor] = useState<string>(defaultColor);
 
   const scale = window.devicePixelRatio * 3; // Adjust the scaling factor for higher DPI
 
@@ -72,8 +76,8 @@ const DrawingCanvas: React.FC = () => {
     const context = canvas.getContext("2d");
 
     // Set brush size and color dynamically
-    context!.lineWidth = 3;
-    context!.strokeStyle = "white";
+    context!.lineWidth = strokeSize;
+    context!.strokeStyle = strokeColor;
     context!.lineCap = "round"; // Smooth lines
 
     context?.beginPath();
@@ -108,6 +112,12 @@ const DrawingCanvas: React.FC = () => {
         onTouchCancel={handleEnd}
       />
       <Tools />
+      <ToolsDetails
+        strokeSize={strokeSize}
+        setStrokeSize={setStrokeSize}
+        strokeColor={strokeColor}
+        setStrokeColor={setStrokeColor}
+      />
     </div>
   );
 };

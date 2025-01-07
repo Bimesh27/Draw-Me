@@ -5,7 +5,6 @@ export default function Home() {
     <div className="w-full max-h-screen flex justify-center">
       {/* <Menu /> */}
       <Canvas />
-      
     </div>
   );
 }

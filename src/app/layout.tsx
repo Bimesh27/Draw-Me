@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import { Caveat } from "next/font/google";
+import { ThemeProvider } from "@/components/ThemeProvider";
 
 const caveat = Caveat({
   subsets: ["latin"],
@@ -19,7 +20,16 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${caveat.className} antialiased`}>{children}</body>
+      <body className={`${caveat.className} antialiased`}>
+        <ThemeProvider
+          attribute={"class"}
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          {children}
+        </ThemeProvider>
+      </body>
     </html>
   );
 }

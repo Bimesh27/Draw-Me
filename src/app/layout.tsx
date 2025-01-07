@@ -8,7 +8,7 @@ const caveat = Caveat({
 });
 
 export const metadata: Metadata = {
-  title: "Draw Me",
+  title: "Visionary",
   description:
     "Best solution for colaborative drawing on the web with your friends and family members. Draw Me is a free online drawing game where you can draw and guess words with your friends and people around the world.",
 };

@@ -13,6 +13,7 @@ const DrawingCanvas: React.FC = () => {
   );
   const [strokeSize, setStrokeSize] = useState<number>(2);
   const [strokeColor, setStrokeColor] = useState<string>(defaultColor);
+  const [selectedTool, setSelectedTool] = useState<string>("Select");
 
   const scale = window.devicePixelRatio * 3; // Adjust the scaling factor for higher DPI
 
@@ -29,16 +30,6 @@ const DrawingCanvas: React.FC = () => {
       context?.scale(scale, scale);
     }
   };
-
-  useEffect(() => {
-    resizeCanvas(); // Initial resize
-    window.addEventListener("resize", resizeCanvas); // Listen for window resize
-    document.body.style.margin = "0"; // Remove body margin
-    document.body.style.overflow = "hidden"; // Disable scrolling
-    return () => {
-      window.removeEventListener("resize", resizeCanvas); // Cleanup on unmount
-    };
-  }, []);
 
   const getPosition = (
     e: React.MouseEvent<HTMLCanvasElement> | React.TouchEvent<HTMLCanvasElement>
@@ -64,11 +55,16 @@ const DrawingCanvas: React.FC = () => {
     setStartPoint({ x, y });
   };
 
-  // Handle drawing move (mouse/touch move)
   const handleMove = (
     e: React.MouseEvent<HTMLCanvasElement> | React.TouchEvent<HTMLCanvasElement>
   ) => {
-    if (!isDrawing || !startPoint || !canvasRef.current) return;
+    if (
+      !isDrawing ||
+      !startPoint ||
+      !canvasRef.current ||
+      selectedTool !== "Pencil"
+    )
+      return;
 
     const { x, y } = getPosition(e);
 
@@ -93,13 +89,27 @@ const DrawingCanvas: React.FC = () => {
     setStartPoint(null);
   };
 
+  useEffect(() => {
+    resizeCanvas(); // Initial resize
+    window.addEventListener("resize", resizeCanvas); // Listen for window resize
+    document.body.style.margin = "0"; // Remove body margin
+    document.body.style.overflow = "hidden"; // Disable scrolling
+    return () => {
+      window.removeEventListener("resize", resizeCanvas); // Cleanup on unmount
+    };
+  }, []);
+
   return (
-    <div className="w-full h-screen overflow-hidden flex justify-center">
+    <div
+      className={`w-full h-screen overflow-hidden flex justify-center ${
+        selectedTool !== "Select" && "cursor-crosshair"
+      }`}
+    >
       <canvas
         ref={canvasRef}
         style={{
           border: "1px solid black",
-          cursor: "crosshair",
+
           touchAction: "none", // Prevent pinch zooming and scrolling on mobile
         }}
         onMouseDown={handleStart}
@@ -111,13 +121,15 @@ const DrawingCanvas: React.FC = () => {
         onTouchEnd={handleEnd}
         onTouchCancel={handleEnd}
       />
-      <Tools />
-      <ToolsDetails
-        strokeSize={strokeSize}
-        setStrokeSize={setStrokeSize}
-        strokeColor={strokeColor}
-        setStrokeColor={setStrokeColor}
-      />
+      <Tools selectedTool={selectedTool} setSelectedTool={setSelectedTool} />
+      {selectedTool !== "Select" && (
+        <ToolsDetails
+          strokeSize={strokeSize}
+          setStrokeSize={setStrokeSize}
+          strokeColor={strokeColor}
+          setStrokeColor={setStrokeColor}
+        />
+      )}
     </div>
   );
 };

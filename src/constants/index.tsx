@@ -54,13 +54,13 @@ export const toolsItems = [
 ];
 
 export const colorSample = [
-  "#FFCCCC", // Bright Light Coral
-  "#FFE5CC", // Light Tangerine Cream
-  "#CCF2FF", // Light Electric Sky Blue
-  "#CCE5FF", // Vivid Soft Blue
-  "#FFD9E8", // Vibrant Pink Blush
-  "#E6CCFF", // Bright Lavender Mist
-  "#CCFFCC", // Vibrant Mint Green
+  "#f87171",
+  "#4ade80", // Light Tangerine Cream
+  "#60a5fa", // Light Electric Sky Blue
+  "#ec4899", // Vivid Soft Blue
+  "#ea580c", // Vibrant Pink Blush
+  "#0e9e35", // Bright Lavender Mist
+  "#5258fa", // Vibrant Mint Green
   "#FFCCF2", // Light Magenta Pink
   "#FFFFCC", // Vibrant Lemonade Yellow
 ];

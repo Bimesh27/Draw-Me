@@ -6,7 +6,6 @@ import { colorSample } from "@/constants";
 import { cn } from "@/lib/utils";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
-import { Separator } from "./ui/separator";
 
 interface Props {
   strokeSize: number;
@@ -19,7 +18,7 @@ const ToolsDetails = ({
   strokeSize,
   setStrokeSize,
   strokeColor,
-  setStrokeColor,
+  setStrokeColor
 }: Props) => {
   const colorPickerRef = useRef<HTMLInputElement | null>(null);
 
@@ -32,13 +31,13 @@ const ToolsDetails = ({
             <div
               key={idx}
               className={cn(
-                "flex items-center justify-center rounded-md ",
+                "flex items-center justify-center rounded-md p-1",
                 strokeColor === c ? "bg-black" : ""
               )}
             >
               <Button
                 className={cn(
-                  "size-8 rounded-lg hover:cursor-pointer p-0 hover:scale-105 transition-all"
+                  "size-7 rounded-lg hover:cursor-pointer p-0 hover:scale-105 transition-all"
                 )}
                 style={{ backgroundColor: c }}
                 onClick={() => setStrokeColor(c)}

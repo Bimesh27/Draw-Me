@@ -5,11 +5,11 @@ import { defaultColor } from "@/constants";
 interface Props {
   undo: () => void;
   redo: () => void;
-  history: string[];
-  redoStack: string[];
+  undoDisabled : boolean;
+  redoDisabled: boolean;
 }
 
-const UndoRedo = ({ undo, redo, history, redoStack }: Props) => {
+const UndoRedo = ({ undo, redo, undoDisabled, redoDisabled }: Props) => {
   console.log(history.length);
   console.log(history);
   
@@ -19,14 +19,14 @@ const UndoRedo = ({ undo, redo, history, redoStack }: Props) => {
       <Button
         className="rounded-none bg-tool hover:bg-[#38383f]"
         onClick={undo}
-        disabled={history.length < 2}
+        disabled={undoDisabled}
       >
         <Undo2 className="size-3" color={defaultColor} />
       </Button>
       <Button
         className="rounded-none bg-tool hover:bg-[#38383f]"
         onClick={redo}
-        disabled={redoStack.length === 0}
+        disabled={redoDisabled}
       >
         <Redo2 className="size-3" color={defaultColor} />
       </Button>

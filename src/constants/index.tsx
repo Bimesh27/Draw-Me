@@ -49,7 +49,7 @@ export const toolsItems = [
   },
   {
     name: "Image",
-    icon: <Image color={defaultColor} />,
+    icon: <Image color={defaultColor}/>,
   },
 ];
 

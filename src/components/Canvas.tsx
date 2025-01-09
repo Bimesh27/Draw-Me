@@ -18,7 +18,7 @@ const DrawingCanvas: React.FC = () => {
   const [history, setHistory] = useState<string[]>([]);
   const [redoStack, setRedoStack] = useState<string[]>([]);
 
-  const scale = window.devicePixelRatio * 3; // Adjust the scaling factor for higher DPI
+  const scale = window.devicePixelRatio * 1.5; // Adjust the scaling factor for higher DPI
 
   const resizeCanvas = () => {
     if (canvasRef.current) {
@@ -75,10 +75,9 @@ const DrawingCanvas: React.FC = () => {
     const canvas = canvasRef.current;
     const context = canvas.getContext("2d");
 
-    // Set brush size and color dynamically
     context!.lineWidth = strokeSize;
     context!.strokeStyle = strokeColor;
-    context!.lineCap = "round"; // Smooth lines
+    context!.lineCap = "round";
 
     context?.beginPath();
     context?.moveTo(startPoint.x, startPoint.y);
@@ -90,30 +89,29 @@ const DrawingCanvas: React.FC = () => {
 
   const undo = () => {
     if (history.length > 1) {
+      const newHistory = [...history];
+      const lastState = newHistory.pop();
+      setHistory(newHistory);
+
+      if (lastState) {
+        setRedoStack((prev) => [...prev, lastState]);
+      }
+
       const canvas = canvasRef.current;
       const context = canvas?.getContext("2d");
 
       if (canvas && context) {
-        const newHistory = [...history];
-        const lastState = newHistory.pop(); // Remove the current state
-        setHistory(newHistory);
-
-        if (lastState) {
-          setRedoStack((prev) => [...prev, lastState]); // Push current state to redo stack
-        }
-
-        // Redraw the previous state
         const img = new Image();
-        img.src = newHistory[newHistory.length - 1]; // Use the last saved state
+        img.src = newHistory[newHistory.length - 1];
         img.onload = () => {
-          context.clearRect(0, 0, canvas.width, canvas.height); // Clear canvas
+          context.clearRect(0, 0, canvas.width, canvas.height);
           context.drawImage(
             img,
             0,
             0,
             canvas.width / scale,
             canvas.height / scale
-          ); // Redraw with proper scaling
+          );
         };
       }
     }
@@ -121,28 +119,28 @@ const DrawingCanvas: React.FC = () => {
 
   const redo = () => {
     if (redoStack.length > 0) {
-      const canvas = canvasRef.current;
-      const context = canvas?.getContext("2d");
+      const newRedoStack = [...redoStack];
+      const lastState = newRedoStack.pop();
+      setRedoStack(newRedoStack);
 
-      if (canvas && context) {
-        const newRedoStack = [...redoStack];
-        const lastState = newRedoStack.pop(); // Restore the last undone state
-        setRedoStack(newRedoStack);
+      if (lastState) {
+        setHistory((prev) => [...prev, lastState]);
 
-        if (lastState) {
-          setHistory((prev) => [...prev, lastState]); // Add restored state back to history
+        const canvas = canvasRef.current;
+        const context = canvas?.getContext("2d");
 
+        if (canvas && context) {
           const img = new Image();
           img.src = lastState;
           img.onload = () => {
-            context.clearRect(0, 0, canvas.width, canvas.height); // Clear canvas
+            context.clearRect(0, 0, canvas.width, canvas.height);
             context.drawImage(
               img,
               0,
               0,
               canvas.width / scale,
               canvas.height / scale
-            ); // Redraw with proper scaling
+            );
           };
         }
       }
@@ -150,33 +148,34 @@ const DrawingCanvas: React.FC = () => {
   };
 
   const handleEnd = () => {
-    if (selectedTool !== "Select" && canvasRef.current) {
+    if (selectedTool !== "Select" && isDrawing && canvasRef.current) {
       const canvas = canvasRef.current;
-      if (canvas) {
-        const dataUrl = canvas.toDataURL(); // Save current state
+      const dataUrl = canvas.toDataURL();
+
+      if (history[history.length - 1] !== dataUrl) {
         setHistory((prev) => [...prev, dataUrl]);
-        setRedoStack([]); // Clear redo stack on new drawing
       }
+
+      setRedoStack([]);
     }
-    console.log(history)
     setIsDrawing(false);
     setStartPoint(null);
   };
 
   useEffect(() => {
-    resizeCanvas(); // Initial resize
-    window.addEventListener("resize", resizeCanvas); // Listen for window resize
-    document.body.style.margin = "0"; // Remove body margin
-    document.body.style.overflow = "hidden"; // Disable scrolling
+    resizeCanvas();
+    window.addEventListener("resize", resizeCanvas);
 
-    // Save initial empty state
     if (canvasRef.current) {
       const canvas = canvasRef.current;
       setHistory([canvas.toDataURL()]);
     }
 
+    document.body.style.margin = "0";
+    document.body.style.overflow = "hidden";
+
     return () => {
-      window.removeEventListener("resize", resizeCanvas); // Cleanup on unmount
+      window.removeEventListener("resize", resizeCanvas);
     };
   }, []);
 
@@ -190,8 +189,7 @@ const DrawingCanvas: React.FC = () => {
         ref={canvasRef}
         style={{
           border: "1px solid black",
-
-          touchAction: "none", // Prevent pinch zooming and scrolling on mobile
+          touchAction: "none",
         }}
         onMouseDown={handleStart}
         onMouseMove={handleMove}
@@ -210,7 +208,12 @@ const DrawingCanvas: React.FC = () => {
           setStrokeColor={setStrokeColor}
         />
       )}
-      <UndoRedo undo={undo} redo={redo} history={history} redoStack={redoStack}/>
+      <UndoRedo
+        undo={undo}
+        redo={redo}
+        undoDisabled={history.length <= 1}
+        redoDisabled={redoStack.length === 0}
+      />
     </div>
   );
 };

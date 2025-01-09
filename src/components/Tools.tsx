@@ -10,7 +10,7 @@ interface Props {
 
 const Tools = ({ selectedTool, setSelectedTool }: Props) => {
   return (
-    <div className="h-12 min-w-[32rem] bg-[#232329] rounded-xl border z-50 absolute bottom-16  max-sm:min-w-[20rem] max-md:min-w-[30rem]">
+    <div className="h-12 min-w-[32rem] bg-tool rounded-xl border z-50 absolute bottom-16  max-sm:min-w-[20rem] max-md:min-w-[30rem]">
       <div className="flex space-x-2 justify-center items-center w-full h-full hover:cursor-pointer">
         {toolsItems.map((tool) => (
           <Button

@@ -210,7 +210,7 @@ const DrawingCanvas: React.FC = () => {
           setStrokeColor={setStrokeColor}
         />
       )}
-      <UndoRedo undo={undo} redo={redo} />
+      <UndoRedo undo={undo} redo={redo} history={history} redoStack={redoStack}/>
     </div>
   );
 };

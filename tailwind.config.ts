@@ -14,6 +14,8 @@ export default {
         foreground: "hsl(var(--foreground))",
         canvas: "#121212",
         tool: "#232329",
+        text: "#E0DFFF",
+        toolhover: "#38383f",
         card: {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",

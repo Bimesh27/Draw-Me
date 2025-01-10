@@ -5,6 +5,7 @@ import Tools from "./Tools";
 import ToolsDetails from "./ToolsDetails";
 import { defaultColor } from "@/constants";
 import UndoRedo from "./UndoRedo";
+import Reset from "./Reset";
 
 const DrawingCanvas: React.FC = () => {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
@@ -168,6 +169,19 @@ const DrawingCanvas: React.FC = () => {
     setStartPoint(null);
   };
 
+  const resetCanvas = () => {
+    const canvas = canvasRef.current;
+    const context = canvas?.getContext("2d");
+
+    if (canvas && context) {
+      context.clearRect(0, 0, canvas.width, canvas.height);
+
+      const emptyState = canvas.toDataURL();
+      setHistory([emptyState]);
+      setRedoStack([]);
+    }
+  };
+
   useEffect(() => {
     resizeCanvas();
     window.addEventListener("resize", resizeCanvas);
@@ -191,7 +205,7 @@ const DrawingCanvas: React.FC = () => {
     } else if (selectedTool !== "Select" && selectedTool !== "Eraser") {
       document.body.style.cursor = "crosshair";
     } else {
-      document.body.style.cursor = "default"; 
+      document.body.style.cursor = "default";
     }
 
     return () => {
@@ -231,6 +245,7 @@ const DrawingCanvas: React.FC = () => {
         undoDisabled={history.length <= 1}
         redoDisabled={redoStack.length === 0}
       />
+      <Reset resetCanvas={resetCanvas}/>
     </div>
   );
 };

@@ -10,6 +10,7 @@ import { Input } from "./ui/input";
 interface Props {
   strokeSize: number;
   strokeColor: string;
+  selectedTool: string;
   setStrokeSize: React.Dispatch<SetStateAction<number>>;
   setStrokeColor: React.Dispatch<SetStateAction<string>>;
 }
@@ -18,7 +19,8 @@ const ToolsDetails = ({
   strokeSize,
   setStrokeSize,
   strokeColor,
-  setStrokeColor
+  setStrokeColor,
+  selectedTool,
 }: Props) => {
   const colorPickerRef = useRef<HTMLInputElement | null>(null);
 
@@ -65,7 +67,7 @@ const ToolsDetails = ({
         </div>
       </section>
       <section className="mt-4 text-xl">
-        <span>Stroke size</span>
+        <span>{selectedTool} size</span>
         <div className="flex space-x-4">
           <Input
             type="range"

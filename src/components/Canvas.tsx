@@ -79,6 +79,12 @@ const DrawingCanvas: React.FC = () => {
     context!.strokeStyle = strokeColor;
     context!.lineCap = "round";
 
+    if (selectedTool === "Eraser") {
+      context!.strokeStyle = "#09090B";
+    } else {
+      context!.strokeStyle = strokeColor;
+    }
+
     context?.beginPath();
     context?.moveTo(startPoint.x, startPoint.y);
     context?.lineTo(x, y);
@@ -179,12 +185,22 @@ const DrawingCanvas: React.FC = () => {
     };
   }, []);
 
+  useEffect(() => {
+    if (selectedTool === "Eraser") {
+      document.body.style.cursor = `url('/eraser.png') 16 16, auto`;
+    } else if (selectedTool !== "Select" && selectedTool !== "Eraser") {
+      document.body.style.cursor = "crosshair";
+    } else {
+      document.body.style.cursor = "default"; 
+    }
+
+    return () => {
+      document.body.style.cursor = "default";
+    };
+  }, [selectedTool]);
+
   return (
-    <div
-      className={`w-full h-screen overflow-hidden flex justify-center ${
-        selectedTool !== "Select" && "cursor-crosshair"
-      }`}
-    >
+    <div className={`w-full h-screen overflow-hidden flex justify-center`}>
       <canvas
         ref={canvasRef}
         style={{
@@ -206,6 +222,7 @@ const DrawingCanvas: React.FC = () => {
           setStrokeSize={setStrokeSize}
           strokeColor={strokeColor}
           setStrokeColor={setStrokeColor}
+          selectedTool={selectedTool}
         />
       )}
       <UndoRedo
